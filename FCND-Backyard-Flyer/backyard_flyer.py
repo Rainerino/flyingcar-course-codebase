@@ -25,7 +25,7 @@ class BackyardFlyer(Drone):
         self.target_position = np.array([0.0, 0.0, 0.0])
         if __name__ == '__main__':
             self.all_waypoints = self.calculate_box()
-        self.waypoint = 1
+        self.waypoint = -1
         self.in_mission = True
         self.check_state = {}
 
@@ -95,7 +95,7 @@ class BackyardFlyer(Drone):
         
         1. Return waypoints to fly a box
         """
-        square = [(10, 0, 3, 0), (10, 10, 3, 0), (0, 10, 3, 0), (0, 0, 3, 0)]
+        square = [(0, 5, 3, 0), (5, 5, 3, 0), (5, 0, 3, 0), (0, 0, 3, 0)]
         return square
 
     def arming_transition(self):
@@ -150,6 +150,7 @@ class BackyardFlyer(Drone):
         print(self.target_position)
 
         if altitude > 0.95 * self.target_position[2] and abs(self.local_position[0] - self.target_position[0]) <0.5 and abs(self.local_position[1] - self.target_position[1]) <0.3:
+            self.waypoint += 1
             print("waypoint",self.waypoint)
             if self.waypoint > 3:
                 self.flight_state = States.LANDING
@@ -160,7 +161,7 @@ class BackyardFlyer(Drone):
                 self.target_position[1] = w[1]
 
             self.cmd_position(self.target_position[0],self.target_position[1],self.target_position[2],0)
-            self.waypoint += 1
+
 
 
 
